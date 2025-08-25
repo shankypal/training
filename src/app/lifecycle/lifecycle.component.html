@@ -1,0 +1,304 @@
+<div class="row">
+    <div class="col">
+        <h6><strong>Constructor: </strong> Called when the component is created. </h6>
+        <h2>Lifecycle Hooks</h2>
+        <ul>
+            <li>ngOnInit</li>
+            <li>ngOnChanges</li>
+            <li>ngOnDestroy</li>
+            <li>ngDoCheck</li>
+            <li>ngAfterContentInit</li>
+            <li>ngAfterContentChecked</li>
+            <li>ngAfterViewInit</li>
+            <li>ngAfterViewChecked</li>
+        </ul>
+        
+        <!-- <div><pre>{{ parentData }}</pre></div> -->
+         <input #inputData type="text" />
+        <button (click)="changeData(inputData.value)" class="btn m-2" [ngClass]="isDataChanged ? 'btn btn-primary' : 'btn btn-success'">Change Parent Data</button>
+        <button (click)="toggleChild()" class="btn m-2" [ngClass]="showChild ?'btn btn-danger':  'btn btn-warning'">{{ showChild ? 'Destroy' : 'Create' }} Child</button>
+        <hr>
+        <app-child *ngIf="showChild" [data]="parentData">This is projected content {{parentData}}</app-child>
+        <hr>
+    </div>
+</div>
+
+
+
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Angular Lifecycle Hooks (with Parent & Child Example)</h1>
+    <div class="accordion" id="lifecycleAccordion">
+
+      <!-- 1. Constructor -->
+      <div class="accordion-item hook-card">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#constructor" aria-expanded="true" aria-controls="constructor">
+            1. constructor()
+          </button>
+        </h2>
+        <div id="constructor" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#lifecycleAccordion">
+          <div class="accordion-body">
+            <p><strong>What:</strong> A special method to create and initialize an object created with a class.</p>
+            <p><strong>When:</strong> Runs first, when the component class is instantiated by Angular.</p>
+            <p><strong>Why:</strong> Used for dependency injection and initializing simple variables. Avoid heavy logic here.</p>
+           
+            <p><em>Here, the Parent constructor runs before <code>ngOnInit</code>, then the Child constructor runs when Angular creates the child.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. ngOnChanges -->
+      <div class="accordion-item hook-card">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onChanges" aria-expanded="false" aria-controls="onChanges">
+            2. ngOnChanges(changes: SimpleChanges)
+          </button>
+        </h2>
+        <div id="onChanges" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+          <div class="accordion-body">
+            <p><strong>What:</strong> Responds to changes in input properties.</p>
+            <p><strong>When:</strong> Called whenever an <code>@Input()</code> property changes. Runs before <code>ngOnInit</code>.</p>
+            <p><strong>Why:</strong> React to parent → child communication.</p>
+            <p><em>Example: Parent updates <code>parentData</code> → Child’s <code>ngOnChanges</code> logs the new value.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repeat similar cards for ngOnInit, ngDoCheck, etc. -->
+      <div class="accordion-item hook-card">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngOnInit" aria-expanded="false" aria-controls="ngOnInit">
+            3. ngOnInit()
+          </button>
+        </h2>
+        <div id="ngOnInit" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+          <div class="accordion-body">
+            <p><strong>What:</strong> Initialization logic for the component.</p>
+            <p><strong>When:</strong> Called once after the first <code>ngOnChanges</code>.</p>
+            <p><strong>Why:</strong> Best place for initialization logic, fetching API data, setting up default states.</p>
+            <p><em>Example: Both Parent and Child run <code>ngOnInit()</code> after construction.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. ngDoCheck -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngDoCheck" aria-expanded="false" aria-controls="ngDoCheck">
+        4. ngDoCheck()
+      </button>
+    </h2>
+    <div id="ngDoCheck" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Custom change detection logic.</p>
+        <p><strong>When:</strong> Runs on every change detection cycle. Angular checks for custom changes not handled by <code>ngOnChanges</code>.</p>
+        <p><strong>Why:</strong> Rarely used, but helpful for manual/complex change detection.</p>
+        <p><em>Example: If you change data without <code>@Input()</code>, Angular will still run <code>ngDoCheck</code>.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ngAfterContentInit -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngAfterContentInit" aria-expanded="false" aria-controls="ngAfterContentInit">
+        5. ngAfterContentInit()
+      </button>
+    </h2>
+    <div id="ngAfterContentInit" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Responds after Angular projects external content into the component.</p>
+        <p><strong>When:</strong> Runs once after Angular projects external content (<code>&lt;ng-content&gt;</code>) into the component.</p>
+        <p><strong>Why:</strong> To execute logic after projected content is initialized.</p>
+        <p><em>Example: Useful if Parent projects content into Child via <code>&lt;ng-content&gt;</code>.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ngAfterContentChecked -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngAfterContentChecked" aria-expanded="false" aria-controls="ngAfterContentChecked">
+        6. ngAfterContentChecked()
+      </button>
+    </h2>
+    <div id="ngAfterContentChecked" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Responds after Angular checks the projected content.</p>
+        <p><strong>When:</strong> Runs after every check of projected content.</p>
+        <p><strong>Why:</strong> For reacting to content updates.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. ngAfterViewInit -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngAfterViewInit" aria-expanded="false" aria-controls="ngAfterViewInit">
+        7. ngAfterViewInit()
+      </button>
+    </h2>
+    <div id="ngAfterViewInit" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Responds after Angular initializes component views and child views.</p>
+        <p><strong>When:</strong> Runs once after Angular initializes component views and child views (DOM ready).</p>
+        <p><strong>Why:</strong> Best for DOM-related logic, querying child elements via <code>@ViewChild</code>.</p>
+        <p><em>Example: Parent can now access Child’s methods with <code>@ViewChild</code>.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. ngAfterViewChecked -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngAfterViewChecked" aria-expanded="false" aria-controls="ngAfterViewChecked">
+        8. ngAfterViewChecked()
+      </button>
+    </h2>
+    <div id="ngAfterViewChecked" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Responds after Angular checks the component views and child views.</p>
+        <p><strong>When:</strong> Runs after every view check (after change detection).</p>
+        <p><strong>Why:</strong> Debugging or reacting after Angular updates the DOM. Avoid heavy logic here (can cause infinite loops).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. ngOnDestroy -->
+  <div class="accordion-item hook-card">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ngOnDestroy" aria-expanded="false" aria-controls="ngOnDestroy">
+        9. ngOnDestroy()
+      </button>
+    </h2>
+    <div id="ngOnDestroy" class="accordion-collapse collapse" data-bs-parent="#lifecycleAccordion">
+      <div class="accordion-body">
+        <p><strong>What:</strong> Cleanup logic before the component is destroyed.</p>
+        <p><strong>When:</strong> Runs just before the component is destroyed (e.g., when <code>*ngIf</code> removes it).</p>
+        <p><strong>Why:</strong> Clean up resources (unsubscribe Observables, clear intervals, detach events).</p>
+        <p><em>Example: When you toggle <code>showChild = false</code>, Angular destroys the Child → <code>ngOnDestroy()</code> runs.</em></p>
+      </div>
+    </div>
+  </div>
+      
+    </div>
+    <!-- Lifecycle Hooks Table -->
+     <div class="table-responsive">
+        <h3 class="text-center text-success mt-5 mb-3">Angular Lifecycle Hooks Reference Table</h3>
+        <table class="table table-bordered table-striped text-start my-4">
+        <thead class="table-dark">
+            <tr>
+            <th>Hook</th>
+            <th>When</th>
+            <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td><code>ngOnChanges()</code></td>
+            <td>Before <code>ngOnInit()</code> and when input properties change</td>
+            <td>React to changes in input properties</td>
+            </tr>
+            <tr>
+            <td><code>ngOnInit()</code></td>
+            <td>After <code>ngOnChanges()</code>, once after component is initialized</td>
+            <td>Initialization tasks (e.g., fetching data)</td>
+            </tr>
+            <tr>
+            <td><code>ngDoCheck()</code></td>
+            <td>During each change detection cycle</td>
+            <td>Custom change detection logic</td>
+            </tr>
+            <tr>
+            <td><code>ngAfterContentInit()</code></td>
+            <td>After content is projected into the component</td>
+            <td>Initialization logic that depends on projected content</td>
+            </tr>
+            <tr>
+            <td><code>ngAfterContentChecked()</code></td>
+            <td>After content has been checked by Angular</td>
+            <td>React to changes in projected content</td>
+            </tr>
+            <tr>
+            <td><code>ngAfterViewInit()</code></td>
+            <td>After the view and child views have been initialized</td>
+            <td>DOM manipulation or accessing child views</td>
+            </tr>
+            <tr>
+            <td><code>ngAfterViewChecked()</code></td>
+            <td>After the view has been checked by Angular</td>
+            <td>React to changes in the view</td>
+            </tr>
+            <tr>
+            <td><code>ngOnDestroy()</code></td>
+            <td>Just before the component is destroyed</td>
+            <td>Cleanup (e.g., unsubscribe, clear intervals)</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <!-- Sequence Section -->
+    <div class="mt-5">
+      <h3 class="text-center text-success mb-3">📌 Sequence for Your Example</h3>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>Initial load:</h5>
+          <ul>
+            <li>Parent constructor</li>
+            <li>Parent ngOnChanges (if inputs exist)</li>
+            <li>Parent ngOnInit</li>
+            <li>Parent ngDoCheck</li>
+            <li>Child constructor</li>
+            <li>Child ngOnChanges</li>
+            <li>Child ngOnInit</li>
+            <li>Child ngDoCheck</li>
+            <li>Parent ngAfterContentInit → Checked</li>
+            <li>Child ngAfterContentInit → Checked</li>
+            <li>Parent ngAfterViewInit → Checked</li>
+            <li>Child ngAfterViewInit → Checked</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>When you change parentData:</h5>
+          <ul>
+            <li>Parent ngDoCheck</li>
+            <li>Child ngOnChanges</li>
+            <li>Child ngDoCheck</li>
+            <li>Child ngAfterContentChecked</li>
+            <li>Child ngAfterViewChecked</li>
+            <li>Parent ngAfterContentChecked</li>
+            <li>Parent ngAfterViewChecked</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>When you toggle child (showChild = false):</h5>
+          <ul>
+            <li>Child ngOnDestroy runs before Angular removes it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <h5 class="card-title">✅ In short:</h5>
+          <ul>
+            <li><b>constructor</b> → Create component instance.</li>
+            <li><b>ngOnInit</b> → Setup initial data.</li>
+            <li><b>ngOnChanges</b> → React to parent → child input changes.</li>
+            <li><b>ngDoCheck</b> → Custom change detection.</li>
+            <li><b>ngAfterContent…</b> → Projected content lifecycle.</li>
+            <li><b>ngAfterView…</b> → DOM/child view lifecycle.</li>
+            <li><b>ngOnDestroy</b> → Cleanup.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
