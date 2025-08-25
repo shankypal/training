@@ -8,6 +8,8 @@
 <button [ngClass]="{'btn-info': isAuthenticated, 'btn-secondary': !isAuthenticated}" class="btn" (click)="isAuthenticated = !isAuthenticated">
   {{ isAuthenticated ? 'Logout' : 'Login' }}
 </button>
+
+<div>This change for git</div>
 <!-- User Information Section -->
 <!-- <form *ngIf="isAuthenticated" (ngSubmit)="submitUser()">
   <div>
